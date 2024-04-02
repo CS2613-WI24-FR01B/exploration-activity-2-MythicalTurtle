@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lights On</title>
+  <style>
+    .button {
+      width: 50px;
+      height: 50px;
+      background-color: grey;
+      border: 1px solid black;
+      margin: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <script>
+    const grid = document.getElementById('grid');
+    const gridSize = 5;
+    let buttons = [];
+
+    function createButton(row, col) {
+      const button = document.createElement('button');
+      button.className = 'button';
+      button.dataset.row = row;
+      button.dataset.col = col;
+      button.addEventListener('click', () => toggleState(parseInt(row), parseInt(col)));
+      return button;
+    }
+
+    function toggleState(row, col) {
+      toggleColor(row, col);
+      toggleColor(row - 1, col);
+      toggleColor(row + 1, col);
+      toggleColor(row, col - 1);
+      toggleColor(row, col + 1);
+      checkWin();
+    }
+
+    function toggleColor(row, col) {
+        const button = buttons.find(btn => btn.dataset.row == row && btn.dataset.col == col);
+        if (button) {
+            button.style.backgroundColor = button.style.backgroundColor === 'yellow' ? 'grey' : 'yellow';
+        }
+}
+
+
+    function checkWin() {
+      const allBlack = buttons.every(btn => btn.style.backgroundColor === 'yellow');
+      if (allBlack) {
+        alert('Congratulations! You are cool!');
+      }
+    }
+
+    function initializeGrid() {
+      for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+          const button = createButton(i, j);
+          buttons.push(button);
+          grid.appendChild(button);
+        }
+      }
+    }
+
+    initializeGrid();
+  </script>
+</body>
+</html>
